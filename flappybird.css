@@ -1,0 +1,74 @@
+body {
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  /* NEW: Prevent canvas margin from collapsing */
+  padding-top: 1px;
+}
+
+#board {
+  /* background-color: skyblue; */
+  background-image: url("./assets/images/flappybirdbg.png");
+  /* NEW: Add margin-top to make space for text */
+  margin-top: 10px;
+}
+
+/* NEW: Rule to hide elements */
+.hidden {
+  display: none !important;
+}
+
+/* NEW: Restart Button Style */
+#restartButton {
+  position: absolute;
+  /* Position it relative to the body, not the canvas */
+  top: 300px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 30px;
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#restartButton:hover {
+  background-color: #eee;
+}
+
+/* NEW: AI Controls Container */
+#aiControls {
+  position: relative;
+  width: 360px; /* Match canvas width */
+  margin: 10px auto 0 auto; /* Center it below canvas */
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  color: white;
+}
+
+/* NEW: Slider styling */
+.slider-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.slider-container label {
+  flex-basis: 70px;
+  text-align: left;
+}
+
+.slider-container input[type="range"] {
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+.slider-container span {
+  flex-basis: 50px;
+  text-align: right;
+}
