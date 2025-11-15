@@ -1,11 +1,82 @@
-# [Flappy Bird](https://youtu.be/jj5ADM2uywg)
-- Coding Tutorial: https://youtu.be/jj5ADM2uywg
-- Demo: https://imkennyyip.github.io/flappy-bird/
-- Learn how to add music/sounds: https://youtu.be/UQA5jG-yh78
-- Learn how to add animations: https://youtu.be/94Vw8teCElM
+# Flappy Bird AI: Neuroevolution
 
-In this tutorial, you will learn to create the flappy bird game with html, css, and javascript. Specifically, you will learn how to code the game using html5 canvas. 
+This project is an implementation of the classic Flappy Bird game [cite: 2] with a powerful twist: a self-learning AI that learns to play the game using a **Genetic Algorithm** and **Neural Networks**[cite: 101, 111].
 
-Throughout the tutorial, you will learn how to create the game loop, add images onto the canvas, add click handlers to make the flappy bird jump, randomly generate pipes and move them across the screen, detect collisions between the flappy bird and each pipe, and add a running score. 
+You can toggle between playing the game yourself [cite: 60] and watching the AI train a population of birds across generations[cite: 56, 145].
 
-![flappy-bird-sample](https://user-images.githubusercontent.com/78777681/219966636-72584cb3-d471-41c0-872f-62c230dccc47.png)
+![AI Training in Action](./screenshots/AI_Mode.png)
+
+---
+
+### 🎮 Features
+
+- **Manual Play Mode:** Play the standard Flappy Bird game yourself[cite: 60].
+- **AI Training Mode:** Press 'A' to toggle the AI mode[cite: 56]. Watch hundreds or thousands of birds learn from scratch[cite: 113, 148].
+- **AI Controls:**
+  - **Speed Slider:** Adjust the simulation speed from 1x to 20x to accelerate training[cite: 35, 147].
+  - **Population Slider:** Control the number of birds in each generation, from 10 to 10,000[cite: 57, 148].
+- **Live Stats:** The AI mode displays the current **Generation**, the number of **Alive** birds, and the **Best Score** achieved so far[cite: 145, 146].
+
+![Manual Play Mode](./screenshots/Normal_Mode.png)
+
+---
+
+### 🧠 How the AI Works
+
+The AI combines a Neural Network (the "brain") with a Genetic Algorithm (the "learning" process).
+
+#### 1. The Neural Network (The "Brain")
+
+Each bird has its own brain, which is a simple feed-forward neural network[cite: 101]. This network takes 5 inputs from the game environment and produces 2 outputs that decide whether to flap or not[cite: 101, 105].
+
+![Neural Network Diagram](./screenshots/Nerual_Netowrk.png)
+
+- **Inputs (5):** [cite: 101, 104]
+
+  1.  Bird's Y (vertical) position
+  2.  Bird's vertical velocity
+  3.  Horizontal distance to the next pipe
+  4.  Y position of the top pipe
+  5.  Y position of the bottom pipe
+
+- **Hidden Layer (8):** An intermediate layer of 8 nodes[cite: 101].
+- **Outputs (2):** [cite: 101, 105]
+  1.  **"Flap" score:** A number representing the confidence to flap.
+  2.  **"Don't Flap" score:** A number representing the confidence to not flap.
+
+The bird takes whichever action has the higher score[cite: 105].
+
+![Game Inputs Labeled](./screenshots/AI_Variables.png)
+
+#### 2. The Genetic Algorithm (The "Learning")
+
+The AI learns through simulated evolution over many **generations**[cite: 111]:
+
+1.  **Initialization:** The program starts with a large population (e.g., 100 birds) of new `AIBird` objects, each with a randomly initialized neural network brain[cite: 113].
+2.  **Run Simulation:** All birds play the game simultaneously. The `think` function is called for each bird to get its decision, and the `update` function moves the bird[cite: 114].
+3.  **Fitness Calculation:** When all birds have died[cite: 117], the algorithm calculates a "fitness" score for each one. This score is based on how long the bird survived (`framesAlive`) and how many pipes it passed (`score`), with passing pipes being exponentially rewarded[cite: 119].
+4.  **Selection (Reproduction):** The algorithm creates a new generation of birds[cite: 132].
+    - **Elitism:** The single best bird from the previous generation is copied directly to the new one, preserving its "smart" brain[cite: 130].
+    - **Selection:** For the rest of the new population, the algorithm uses "roulette wheel selection" to pick parents from the old population[cite: 133]. Birds with higher fitness scores are more likely to be chosen[cite: 135].
+5.  **Mutation:** When a parent is selected, its brain is copied to a new "child" bird[cite: 131]. This child's brain then undergoes **mutation**, where its neural network weights and biases are randomly adjusted by a small amount [cite: 131, 94-97]. This allows the new generation to explore new strategies.
+6.  **Repeat:** This cycle repeats[cite: 143], and over time, the birds become progressively better at navigating the pipes.
+
+---
+
+### 🚀 How to Run
+
+1.  Clone the repository.
+2.  Open the `index.html` file in any modern web browser.
+
+### 🕹️ Controls
+
+- **Space / Arrow Up / X:** Flap (in manual mode)[cite: 60].
+- **A:** Toggle between Manual Mode and AI Training Mode[cite: 56].
+
+### 💻 Technologies Used
+
+- **HTML5:** For the basic page structure (`index.html`)[cite: 1].
+- **CSS3:** For styling the game, sliders, and buttons (`flappybird.css`)[cite: 1].
+- **JavaScript (ES6+):**
+  - `flappybird.js`: Handles all the core game logic, rendering on the HTML5 Canvas, physics, and collision detection [cite: 1, 18-64].
+  - `geneticalgorithm.js`: Contains the classes for `NeuralNetwork`, `AIBird`, and `GeneticAlgorithm`, all built from scratch [cite: 1, 65-146].
