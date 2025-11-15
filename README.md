@@ -5,7 +5,7 @@ This project is an implementation of the classic Flappy Bird game with a powerfu
 You can toggle between playing the game yourself and watching the AI train a population of birds across generations.
 
 <p align="center">
-  <img src="./screenshots/AI_Mode.png" height="300">
+  <img src="./screenshots/AI_Mode.png" height="600">
 </p>
 
 ---
@@ -22,7 +22,7 @@ You can toggle between playing the game yourself and watching the AI train a pop
 - **Live Stats:** The AI mode displays the current **Generation**, the number of **Alive** birds, and the **Best Score** achieved so far.
 
 <p align="center">
-  <img src="./screenshots/Normal_Mode.png" height="300">
+  <img src="./screenshots/Normal_Mode.png" height="600">
 </p>
 
 ---
