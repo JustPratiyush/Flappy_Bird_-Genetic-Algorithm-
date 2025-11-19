@@ -1,24 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flappy Bird AI</title>
+    
+    <title>Flappy Bird AI - Neuroevolution & Genetic Algorithm Simulator</title>
+    <meta name="description" content="Watch an AI learn to play Flappy Bird using Neural Networks and Genetic Algorithms. An interactive JavaScript simulation demonstrating neuroevolution in the browser." />
+    <meta name="keywords" content="Flappy Bird AI, Genetic Algorithm JavaScript, Neuroevolution, Neural Network Visualization, Machine Learning Game, AI Simulation" />
+    <meta name="author" content="Abhinav Kuchhal" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-project-url.vercel.app/" /> <meta property="og:title" content="Flappy Bird AI: Genetic Algorithm Simulator" />
+    <meta property="og:description" content="An interactive simulation where AI learns to play Flappy Bird from scratch using Neuroevolution." />
+    <meta property="og:image" content="https://your-project-url.vercel.app/screenshots/AI_Mode.png" /> <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Flappy Bird AI Simulator" />
+    <meta name="twitter:description" content="Watch AI evolve to beat Flappy Bird using Genetic Algorithms." />
+    <meta name="twitter:image" content="https://your-project-url.vercel.app/screenshots/AI_Mode.png" />
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="flappybird.css" />
+    
     <script src="geneticalgorithm.js"></script>
     <script src="flappybird.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Flappy Bird AI",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web Browser",
+      "description": "A browser-based implementation of Flappy Bird that uses a genetic algorithm and neural networks to teach AI agents how to play.",
+      "author": {
+        "@type": "Person",
+        "name": "Abhinav Kuchhal",
+        "url": "https://abhinavkuchhal.com"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "Genetic Algorithm, Neural Network Visualization, Neuroevolution simulation"
+    }
+    </script>
   </head>
   <body>
     <div class="game-container">
-      <div class="header">
-        <h1>Flappy Bird AI</h1>
-      </div>
+      
+      <header class="header">
+        <h1>Flappy Bird AI: Neuroevolution</h1>
+      </header>
       
       <div class="game-content">
-        <div class="left-sidebar">
+        <aside class="left-sidebar">
           <h3>How it Works: AI & Genetic Algorithm</h3>
           <p>
             <strong>Genetic Algorithm:</strong> Mimics natural selection.
@@ -29,8 +66,8 @@
               <li><strong>Mutation:</strong> Random changes introduced.</li>
             </ul>
           </p>
-          <img src="screenshots/AI_Variables.png" alt="AI Variables" />
-          
+          <img src="screenshots/AI_Variables.png" alt="Diagram showing Genetic Algorithm variables: Selection, Crossover, and Mutation" loading="lazy" />
+       
           <p>
             <strong>Neural Network:</strong> The brain of the bird.
             <ul>
@@ -39,18 +76,18 @@
               <li><strong>Output:</strong> Jump or Don't Jump.</li>
             </ul>
           </p>
-          <img src="screenshots/Nerual_Netowrk.png" alt="Neural Network" />
-        </div>
+          <img src="screenshots/Nerual_Netowrk.png" alt="Visualization of the Neural Network architecture with 5 inputs and 2 outputs" loading="lazy" />
+        </aside>
 
-        <div class="canvas-wrapper">
+        <main class="canvas-wrapper">
           <canvas id="board"></canvas>
           <div id="overlay-controls">
               <button id="playButton">PLAY</button>
               <button id="restartButton" class="hidden">RESTART</button>
           </div>
-        </div>
+        </main>
 
-        <div class="controls-area">
+        <section class="controls-area">
           <button id="toggleAiButton" class="primary-btn">ENABLE AI MODE</button>
           
           <div id="aiControls" class="hidden panel">
@@ -72,6 +109,7 @@
               />
               <span id="populationLabel">100</span>
             </div>
+        
             <div class="stats">
                <p>Best Score: <span id="bestScoreDisplay">0</span></p>
             </div>
@@ -80,17 +118,18 @@
           <div class="instructions">
             <p><kbd>SPACE</kbd> / <kbd>↑</kbd> to Jump</p>
           </div>
-        </div>
+        </section>
       </div>
-      
-      <div class="about">
+    
+      <footer class="about">
         <p>Made by <a href="https://abhinavkuchhal.com" target="_blank" rel="noopener noreferrer">Abhinav Kuchhal</a></p>
         <p><a href="https://github.com/JustPratiyush/Flappy_Bird_-Genetic-Algorithm-" target="_blank" rel="noopener noreferrer">Get the code on GitHub</a></p>
-      </div>
+      </footer>
     </div>
+
     <script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
