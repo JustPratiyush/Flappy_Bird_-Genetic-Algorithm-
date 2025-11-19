@@ -49,6 +49,7 @@ let hitSound;
 let dieSound;
 
 // NEW: UI Elements
+let playButton;
 let restartButton;
 let aiControls;
 let speedSlider;
@@ -83,11 +84,12 @@ window.onload = function () {
 
   // Load Sounds
   flySound = new Audio("./assets/sounds/sfx_wing.wav");
-  scoreSound = new Audio("./assets:s/sounds/sfx_point.wav");
+  scoreSound = new Audio("./assets/sounds/sfx_point.wav");
   hitSound = new Audio("./assets/sounds/sfx_hit.wav");
   dieSound = new Audio("./assets/sounds/sfx_die.wav");
-
+ 
   // NEW: Get UI Elements
+  playButton = document.getElementById("playButton");
   restartButton = document.getElementById("restartButton");
   aiControls = document.getElementById("aiControls");
   speedSlider = document.getElementById("speedSlider");
@@ -98,6 +100,7 @@ window.onload = function () {
   bestScoreDisplay = document.getElementById("bestScoreDisplay");
 
   // NEW: Add Event Listeners
+  playButton.addEventListener("click", startGame);
   restartButton.addEventListener("click", restartGame);
   
   toggleAiButton.addEventListener("click", () => {
@@ -115,10 +118,35 @@ window.onload = function () {
     }
   });
 
-  requestAnimationFrame(update);
-  // REMOVED: setInterval(placePipes, 1500); -> Moved to update loop
+  // Draw initial state (bird only, background is CSS)
+  // Wait for bird image to load if not already cached/loaded
+  if (birdImg.complete) {
+      context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+  } else {
+      birdImg.onload = function () {
+          context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+      };
+  }
+
+  // REMOVED: requestAnimationFrame(update); -> Moved to startGame
+  // REMOVED: requestAnimationFrame(update); -> Moved to startGame
   document.addEventListener("keydown", moveBird);
+  document.addEventListener("mousedown", (e) => {
+      // Prevent jumping if clicking buttons
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+      jump();
+  });
 };
+
+// NEW: Game Start Logic
+let gameRunning = false;
+
+function startGame() {
+    if (gameRunning) return;
+    gameRunning = true;
+    playButton.classList.add("hidden");
+    requestAnimationFrame(update);
+}
 
 function update() {
   requestAnimationFrame(update);
@@ -234,7 +262,15 @@ function update() {
   context.fillText(score, 5, 45);
 
   if (gameOver) {
-    context.fillText("GAME OVER", 5, 90);
+    context.save();
+    context.fillStyle = "white";
+    context.strokeStyle = "black";
+    context.lineWidth = 2;
+    context.font = "45px sans-serif";
+    context.textAlign = "center";
+    context.fillText("GAME OVER", board.width / 2, board.height / 2 - 50);
+    context.strokeText("GAME OVER", board.width / 2, board.height / 2 - 50);
+    context.restore();
   }
 }
 
@@ -293,6 +329,8 @@ function toggleAiMode() {
 }
 
 function moveBird(e) {
+  if (!gameRunning) return; // Don't allow movement before start
+
   // Toggle AI mode with 'A' key
   if (e.code == "KeyA") {
     toggleAiMode();
@@ -302,6 +340,13 @@ function moveBird(e) {
   if (aiMode) return; // Don't allow manual control in AI mode
 
   if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
+    jump();
+  }
+}
+
+function jump() {
+    if (!gameRunning || aiMode) return;
+
     //jump
     velocityY = -6;
     flySound.currentTime = 0;
@@ -309,10 +354,8 @@ function moveBird(e) {
 
     //reset game
     if (gameOver) {
-      // NEW: Call restartGame function
       restartGame();
     }
-  }
 }
 
 // NEW: Function to reset the human game

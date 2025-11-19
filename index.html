@@ -18,9 +18,34 @@
       </div>
       
       <div class="game-content">
+        <div class="left-sidebar">
+          <h3>How it Works: AI & Genetic Algorithm</h3>
+          <p>
+            <strong>Genetic Algorithm:</strong> Mimics natural selection.
+            Birds (agents) evolve over generations.
+            <ul>
+              <li><strong>Selection:</strong> Best birds are chosen.</li>
+              <li><strong>Crossover:</strong> Genes are mixed.</li>
+              <li><strong>Mutation:</strong> Random changes introduced.</li>
+            </ul>
+          </p>
+          <img src="screenshots/AI_Variables.png" alt="AI Variables" />
+          
+          <p>
+            <strong>Neural Network:</strong> The brain of the bird.
+            <ul>
+              <li><strong>Inputs:</strong> Bird Y, Pipe Distance, Pipe Height.</li>
+              <li><strong>Hidden Layers:</strong> Process information.</li>
+              <li><strong>Output:</strong> Jump or Don't Jump.</li>
+            </ul>
+          </p>
+          <img src="screenshots/Nerual_Netowrk.png" alt="Neural Network" />
+        </div>
+
         <div class="canvas-wrapper">
           <canvas id="board"></canvas>
           <div id="overlay-controls">
+              <button id="playButton">PLAY</button>
               <button id="restartButton" class="hidden">RESTART</button>
           </div>
         </div>
@@ -56,6 +81,11 @@
             <p><kbd>SPACE</kbd> / <kbd>↑</kbd> to Jump</p>
           </div>
         </div>
+      </div>
+      
+      <div class="about">
+        <p>Made by <a href="https://abhinavkuchhal.com" target="_blank" rel="noopener noreferrer">Abhinav Kuchhal</a></p>
+        <p><a href="https://github.com/JustPratiyush/Flappy_Bird_-Genetic-Algorithm-" target="_blank" rel="noopener noreferrer">Get the code on GitHub</a></p>
       </div>
     </div>
   </body>
