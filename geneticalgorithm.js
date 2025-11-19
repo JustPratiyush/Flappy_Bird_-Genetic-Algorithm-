@@ -336,7 +336,7 @@ class GeneticAlgorithm {
     return breedingPool[breedingPool.length - 1];
   }
 
-  draw(context) {
+  draw(context, birdImg) {
     for (let bird of this.population) {
       if (bird.alive) {
         context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
@@ -380,10 +380,10 @@ function updateGA() {
   }
 }
 
-function drawGA(context) {
+function drawGA(context, birdImg) {
   if (!aiMode || !ga) return;
 
-  ga.draw(context);
+  ga.draw(context, birdImg);
 
   let stats = ga.getStats();
   context.fillStyle = "white";

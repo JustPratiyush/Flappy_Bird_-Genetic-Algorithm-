@@ -3,39 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flappy Bird</title>
+    <title>Flappy Bird AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="flappybird.css" />
     <script src="geneticalgorithm.js"></script>
     <script src="flappybird.js"></script>
   </head>
   <body>
-    <canvas id="board"></canvas>
-
-    <button id="restartButton" class="hidden">Restart</button>
-
-    <div id="aiControls" class="hidden">
-      <div class="slider-container">
-        <label for="speedSlider">Speed:</label>
-        <input type="range" id="speedSlider" min="1" max="20" value="1" />
-        <span id="speedLabel">1x</span>
+    <div class="game-container">
+      <div class="header">
+        <h1>Flappy Bird AI</h1>
       </div>
-      <div class="slider-container">
-        <label for="populationSlider">Birds:</label>
-        <input
-          type="range"
-          id="populationSlider"
-          min="10"
-          max="10000"
-          value="100"
-          step="10"
-        />
-        <span id="populationLabel">100</span>
-      </div>
-    </div>
+      
+      <div class="game-content">
+        <div class="canvas-wrapper">
+          <canvas id="board"></canvas>
+          <div id="overlay-controls">
+              <button id="restartButton" class="hidden">RESTART</button>
+          </div>
+        </div>
 
-    <div style="margin-top: 20px">
-      <p>Press 'A' to toggle AI training mode</p>
-      <p>Press Space/Up/X to play manually</p>
+        <div class="controls-area">
+          <button id="toggleAiButton" class="primary-btn">ENABLE AI MODE</button>
+          
+          <div id="aiControls" class="hidden panel">
+            <h3>AI Settings</h3>
+            <div class="slider-container">
+              <label for="speedSlider">Speed</label>
+              <input type="range" id="speedSlider" min="1" max="50" value="1" />
+              <span id="speedLabel">1x</span>
+            </div>
+            <div class="slider-container">
+              <label for="populationSlider">Birds</label>
+              <input
+                type="range"
+                id="populationSlider"
+                min="10"
+                max="10000"
+                value="100"
+                step="10"
+              />
+              <span id="populationLabel">100</span>
+            </div>
+            <div class="stats">
+               <p>Best Score: <span id="bestScoreDisplay">0</span></p>
+            </div>
+          </div>
+
+          <div class="instructions">
+            <p><kbd>SPACE</kbd> / <kbd>↑</kbd> to Jump</p>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

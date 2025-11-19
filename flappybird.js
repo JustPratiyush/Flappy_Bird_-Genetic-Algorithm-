@@ -10,6 +10,10 @@ let birdHeight = 24;
 let birdX = boardWidth / 8;
 let birdY = boardHeight / 2;
 let birdImg;
+// NEW: Animation variables
+let birdAnimation = [];
+let birdFrame = 0;
+let frameCount = 0;
 
 let bird = {
   x: birdX,
@@ -24,6 +28,8 @@ let pipeWidth = 64;
 let pipeHeight = 512;
 let pipeX = boardWidth;
 let pipeY = 0;
+// NEW: Timer for pipe spawning (syncs with game speed)
+let pipeSpawnTimer = 0;
 
 let topPipeImg;
 let bottomPipeImg;
@@ -49,6 +55,8 @@ let speedSlider;
 let speedLabel;
 let populationSlider;
 let populationLabel;
+let toggleAiButton;
+let bestScoreDisplay;
 
 window.onload = function () {
   board = document.getElementById("board");
@@ -57,11 +65,15 @@ window.onload = function () {
   context = board.getContext("2d");
 
   //load images
-  birdImg = new Image();
-  birdImg.src = "./assets/images/flappybird.gif";
-  birdImg.onload = function () {
-    context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
-  };
+  //load images
+  // NEW: Load animation frames
+  for (let i = 0; i < 4; i++) {
+    let img = new Image();
+    img.src = `./assets/images/flappybird${i}.png`;
+    birdAnimation.push(img);
+  }
+  // Fallback/Initial image
+  birdImg = birdAnimation[0];
 
   topPipeImg = new Image();
   topPipeImg.src = "./assets/images/toppipe.png";
@@ -82,9 +94,16 @@ window.onload = function () {
   speedLabel = document.getElementById("speedLabel");
   populationSlider = document.getElementById("populationSlider");
   populationLabel = document.getElementById("populationLabel");
+  toggleAiButton = document.getElementById("toggleAiButton");
+  bestScoreDisplay = document.getElementById("bestScoreDisplay");
 
   // NEW: Add Event Listeners
   restartButton.addEventListener("click", restartGame);
+  
+  toggleAiButton.addEventListener("click", () => {
+      toggleAiMode();
+  });
+
   speedSlider.addEventListener("input", (e) => {
     speedLabel.innerText = `${e.target.value}x`;
   });
@@ -97,12 +116,19 @@ window.onload = function () {
   });
 
   requestAnimationFrame(update);
-  setInterval(placePipes, 1500);
+  // REMOVED: setInterval(placePipes, 1500); -> Moved to update loop
   document.addEventListener("keydown", moveBird);
 };
 
 function update() {
   requestAnimationFrame(update);
+
+  // NEW: Animation Logic (Run for both modes)
+  frameCount++;
+  if (frameCount % 5 === 0) { // Change frame every 5 ticks
+      birdFrame = (birdFrame + 1) % 4;
+      birdImg = birdAnimation[birdFrame];
+  }
 
   // AI Mode
   if (aiMode) {
@@ -126,6 +152,13 @@ function update() {
 
       // Update AI birds
       updateGA();
+
+      // NEW: Spawn pipes based on frames (90 frames ~= 1500ms at 1x speed)
+      pipeSpawnTimer++;
+      if (pipeSpawnTimer >= 90) {
+          placePipes();
+          pipeSpawnTimer = 0;
+      }
     }
 
     // NEW: Drawing happens only once per frame, outside the speed loop
@@ -133,7 +166,7 @@ function update() {
       let pipe = pipeArray[i];
       context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);
     }
-    drawGA(context);
+    drawGA(context, birdImg);
 
     return;
   }
@@ -147,8 +180,10 @@ function update() {
   context.clearRect(0, 0, board.width, board.height);
 
   //bird
+  //bird
   velocityY += gravity;
   bird.y = Math.max(bird.y + velocityY, 0);
+  
   context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
   if (bird.y > board.height) {
@@ -184,6 +219,13 @@ function update() {
   //clear pipes
   while (pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
     pipeArray.shift();
+  }
+
+  // NEW: Spawn pipes based on frames
+  pipeSpawnTimer++;
+  if (pipeSpawnTimer >= 90) {
+      placePipes();
+      pipeSpawnTimer = 0;
   }
 
   //score
@@ -231,22 +273,29 @@ function placePipes() {
   pipeArray.push(bottomPipe);
 }
 
+function toggleAiMode() {
+    if (!aiMode) {
+      // Switch to AI Mode
+      aiControls.classList.remove("hidden");
+      restartButton.classList.add("hidden"); // Hide restart button
+      toggleAiButton.innerText = "DISABLE AI MODE";
+      let popValue = parseInt(populationSlider.value);
+      initGA(popValue);
+      pipeSpawnTimer = 0; // Reset timer
+    } else {
+      // Switch to Human Mode
+      aiControls.classList.add("hidden");
+      toggleAiButton.innerText = "ENABLE AI MODE";
+      aiMode = false;
+      restartGame();
+      pipeSpawnTimer = 0; // Reset timer
+    }
+}
+
 function moveBird(e) {
   // Toggle AI mode with 'A' key
   if (e.code == "KeyA") {
-    if (!aiMode) {
-      // NEW: Show controls and init GA with slider value
-      aiControls.classList.remove("hidden");
-      restartButton.classList.add("hidden"); // Hide restart button
-      let popValue = parseInt(populationSlider.value);
-      initGA(popValue);
-    } else {
-      // NEW: Hide controls
-      aiControls.classList.add("hidden");
-      aiMode = false;
-      // NEW: Reset to human mode
-      restartGame();
-    }
+    toggleAiMode();
     return;
   }
 
@@ -274,13 +323,16 @@ function restartGame() {
   score = 0;
   gameOver = false;
   restartButton.classList.add("hidden");
+  pipeSpawnTimer = 0; // Reset timer
 }
 
 function detectCollision(a, b) {
+  // Make hitbox slightly smaller for better feel
+  let padding = 4;
   return (
-    a.x < b.x + b.width &&
-    a.x + a.width > b.x &&
-    a.y < b.y + b.height &&
-    a.y + a.height > b.y
+    a.x + padding < b.x + b.width &&
+    a.x + a.width - padding > b.x &&
+    a.y + padding < b.y + b.height &&
+    a.y + a.height - padding > b.y
   );
 }

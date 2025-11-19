@@ -1,74 +1,187 @@
+:root {
+  --primary-color: #4ec0ca;
+  --accent-color: #f4ce10;
+  --dark-bg: #2c3e50;
+  --panel-bg: rgba(0, 0, 0, 0.85);
+  --text-color: #ffffff;
+  --font-main: 'Roboto', sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
+}
+
 body {
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-main);
   text-align: center;
-  /* NEW: Prevent canvas margin from collapsing */
-  padding-top: 1px;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.header h1 {
+  font-family: var(--font-pixel);
+  font-size: 2rem;
+  color: var(--accent-color);
+  text-shadow: 4px 4px 0px #000;
+  margin: 0;
+}
+
+.canvas-wrapper {
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 4px solid #fff;
+  flex-shrink: 0;
 }
 
 #board {
-  /* background-color: skyblue; */
+  display: block;
   background-image: url("./assets/images/flappybirdbg.png");
-  /* NEW: Add margin-top to make space for text */
-  margin-top: 10px;
 }
 
-/* NEW: Rule to hide elements */
-.hidden {
-  display: none !important;
-}
-
-/* NEW: Restart Button Style */
-#restartButton {
+#overlay-controls {
   position: absolute;
-  /* Position it relative to the body, not the canvas */
-  top: 300px; /* Adjust as needed */
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 15px 30px;
-  font-size: 20px;
-  font-family: "Courier New", Courier, monospace;
-  background-color: white;
-  border: 2px solid black;
-  border-radius: 8px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through to canvas usually */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#overlay-controls button {
+  pointer-events: auto; /* Re-enable clicks for buttons */
+}
+
+.controls-area {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-left: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+button {
+  font-family: var(--font-pixel);
+  border: none;
   cursor: pointer;
-  font-weight: bold;
+  transition: transform 0.1s, filter 0.2s;
 }
 
-#restartButton:hover {
-  background-color: #eee;
+button:active {
+  transform: scale(0.95);
 }
 
-/* NEW: AI Controls Container */
-#aiControls {
-  position: relative;
-  width: 360px; /* Match canvas width */
-  margin: 10px auto 0 auto; /* Center it below canvas */
-  background: rgba(0, 0, 0, 0.7);
+.primary-btn {
+  background-color: var(--accent-color);
+  color: #000;
+  padding: 15px;
+  font-size: 1rem;
   border-radius: 8px;
-  padding: 10px;
-  box-sizing: border-box;
-  color: white;
+  box-shadow: 0 4px 0 #c49b00;
+  width: 100%;
 }
 
-/* NEW: Slider styling */
+.primary-btn:hover {
+  filter: brightness(1.1);
+}
+
+#restartButton {
+  background-color: #ff5252;
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 0 #b71c1c;
+  text-transform: uppercase;
+}
+
+.panel {
+  background: var(--panel-bg);
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #555;
+}
+
+.panel h3 {
+  margin: 0 0 15px 0;
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
 .slider-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
 }
 
 .slider-container label {
-  flex-basis: 70px;
+  flex-basis: 60px;
   text-align: left;
+  font-weight: bold;
 }
 
 .slider-container input[type="range"] {
   flex-grow: 1;
   margin: 0 10px;
+  cursor: pointer;
 }
 
 .slider-container span {
-  flex-basis: 50px;
+  flex-basis: 40px;
   text-align: right;
+  font-family: monospace;
+}
+
+.stats {
+  margin-top: 10px;
+  border-top: 1px solid #555;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.instructions {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+}
+
+kbd {
+  background: #444;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-bottom: 2px solid #222;
+  font-family: monospace;
+}
+
+.hidden {
+  display: none !important;
 }
